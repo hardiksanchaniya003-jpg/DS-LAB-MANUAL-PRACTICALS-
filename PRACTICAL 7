@@ -1,0 +1,122 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void insertAtEnd(struct Node** head_ref, int new_data) {
+    struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* last = *head_ref;
+    new_node->data = new_data;
+    new_node->next = NULL;
+    if (*head_ref == NULL) {
+        *head_ref = new_node;
+        return;
+    }
+    while (last->next != NULL) {
+        last = last->next;
+    }
+    last->next = new_node;
+}
+
+void deleteFromBeginning(struct Node** head_ref) {
+    if (*head_ref == NULL) {
+        printf("List is empty. Deletion failed.\n");[cite: 15]
+        return;
+    }
+    struct Node* temp = *head_ref;
+    *head_ref = (*head_ref)->next;
+    free(temp);
+}
+
+void deleteFromEnd(struct Node** head_ref) {
+    if (*head_ref == NULL) {
+        printf("List is empty. Deletion failed.\n");[cite: 15]
+        return;
+    }
+    struct Node* temp = *head_ref;
+    if (temp->next == NULL) {
+        *head_ref = NULL;
+        free(temp);
+        return;
+    }
+    while (temp->next->next != NULL) {
+        temp = temp->next;
+    }
+    free(temp->next);
+    temp->next = NULL;
+}
+
+void deleteFromPosition(struct Node** head_ref, int position) {
+    if (*head_ref == NULL) {
+        printf("List is empty. Deletion failed.\n");[cite: 16]
+        return;
+    }
+    struct Node* temp = *head_ref;
+    if (position == 1) {
+        *head_ref = temp->next;
+        free(temp);
+        return;
+    }
+    for (int i = 1; temp != NULL && i < position - 1; i++) {
+        temp = temp->next;
+    }
+    if (temp == NULL || temp->next == NULL) {
+        printf("Position %d is out of bounds.\n", position);[cite: 16]
+        return;
+    }
+    struct Node* next = temp->next->next;
+    free(temp->next);
+    temp->next = next;
+}
+
+void displayList(struct Node* node) {
+    if (node == NULL) {
+        printf("List is empty.\n");[cite: 17]
+        return;
+    }
+    while (node != NULL) {
+        printf("%d -> ", node->data);[cite: 17]
+        node = node->next;
+    }
+    printf("NULL\n");[cite: 17]
+}
+
+int main() {
+    struct Node* head = NULL;
+    insertAtEnd(&head, 10);[cite: 13]
+    insertAtEnd(&head, 20);[cite: 13]
+    insertAtEnd(&head, 30);[cite: 13]
+    insertAtEnd(&head, 40);[cite: 13]
+    insertAtEnd(&head, 50);[cite: 13]
+
+    printf("Original List: ");[cite: 13, 14]
+    displayList(head);
+
+    deleteFromBeginning(&head);[cite: 14]
+    printf("After deleting from beginning: ");[cite: 14]
+    displayList(head);
+
+    deleteFromEnd(&head);[cite: 14]
+    printf("After deleting from end: ");[cite: 14]
+    displayList(head);
+
+    deleteFromPosition(&head, 2);[cite: 14]
+    printf("After deleting from position 2: ");[cite: 14]
+    displayList(head);
+
+    return 0;
+}
+
+
+
+
+
+
+//OUTPUT 
+//Original List: 10 -> 20 -> 30 -> 40 -> 50 -> NULL
+After deleting from beginning: 20 -> 30 -> 40 -> 50 -> NULL
+After deleting from end: 20 -> 30 -> 40 -> NULL
+After deleting from position 2: 20 -> 40 -> NULL
