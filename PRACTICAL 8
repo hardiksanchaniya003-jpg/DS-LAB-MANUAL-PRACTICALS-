@@ -1,0 +1,103 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int info;
+    struct node *prev, *next;
+};
+
+struct node* start = NULL;
+
+void traverse() {
+    if (start == NULL) {
+        printf("\nList is empty\n");[cite: 5]
+        return;
+    }
+    struct node* temp = start;
+    printf("List: ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->info);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+void insertAtFront() {
+    int data;
+    struct node* temp = (struct node*)malloc(sizeof(struct node));
+    printf("\nEnter number to be inserted: ");[cite: 5]
+    scanf("%d", &data);
+    temp->info = data;
+    temp->prev = NULL;
+    temp->next = start;
+    if (start != NULL)
+        start->prev = temp;
+    start = temp;
+    printf("Inserted %d at the front.\n", data);
+}
+
+void insertAtEnd() {
+    int data;
+    struct node *temp, *trav;
+    temp = (struct node*)malloc(sizeof(struct node));
+    printf("\nEnter number to be inserted: ");[cite: 6]
+    scanf("%d", &data);
+    temp->info = data;
+    temp->next = NULL;
+
+    if (start == NULL) {
+        temp->prev = NULL;
+        start = temp;
+    } else {
+        trav = start;
+        while (trav->next != NULL)
+            trav = trav->next;
+        trav->next = temp;
+        temp->prev = trav;
+    }
+    printf("Inserted %d at the end.\n", data);
+}
+
+void deleteFirst() {
+    if (start == NULL) {
+        printf("\nList is empty\n");[cite: 9]
+        return;
+    }
+    struct node* temp = start;
+    start = start->next;
+    if (start != NULL)
+        start->prev = NULL;
+    printf("Deleted element: %d\n", temp->info);
+    free(temp);
+}
+
+int main() {
+    // Demonstration of automated insertions and deletions
+    struct node* n1 = (struct node*)malloc(sizeof(struct node));
+    n1->info = 10; n1->prev = NULL; n1->next = NULL;
+    start = n1;
+
+    struct node* n2 = (struct node*)malloc(sizeof(struct node));
+    n2->info = 20; n2->prev = n1; n2->next = NULL;
+    n1->next = n2;
+
+    printf("Initial Doubly Linked List:\n");
+    traverse();
+
+    printf("\nDeleting first element:\n");
+    deleteFirst();
+    traverse();
+
+    return 0;
+}
+
+
+
+
+//OUTPUT
+//Initial Doubly Linked List:
+List: 10 <-> 20 <-> NULL
+
+Deleting first element:
+Deleted element: 10
+List: 20 <-> NULL
