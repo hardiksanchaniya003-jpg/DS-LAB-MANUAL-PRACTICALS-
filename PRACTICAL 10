@@ -1,0 +1,72 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+struct Node* createNode(int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->left = NULL;
+    newNode->right = NULL;
+    return newNode;
+}
+
+// Inorder Traversal (Left -> Root -> Right)
+void inorder(struct Node* root) {
+    if (root != NULL) {
+        inorder(root->left);[cite: 1]
+        printf("%d ", root->data);[cite: 1]
+        inorder(root->right);[cite: 1]
+    }
+}
+
+// Preorder Traversal (Root -> Left -> Right)
+void preorder(struct Node* root) {
+    if (root != NULL) {
+        printf("%d ", root->data);[cite: 1, 2]
+        preorder(root->left);[cite: 1, 2]
+        preorder(root->right);[cite: 2]
+    }
+}
+
+// Postorder Traversal (Left -> Right -> Root)
+void postorder(struct Node* root) {
+    if (root != NULL) {
+        postorder(root->left);[cite: 2]
+        postorder(root->right);[cite: 2]
+        printf("%d ", root->data);[cite: 2]
+    }
+}
+
+int main() {
+    struct Node* root = createNode(10);[cite: 2]
+    root->left = createNode(20);[cite: 2]
+    root->right = createNode(30);[cite: 2]
+    root->left->left = createNode(40);[cite: 2]
+    root->left->right = createNode(50);[cite: 2]
+    root->right->left = createNode(60);[cite: 2]
+    root->right->right = createNode(70);[cite: 2]
+
+    printf("Inorder Traversal: ");[cite: 2]
+    inorder(root);[cite: 2]
+    
+    printf("\nPreorder Traversal: ");[cite: 2]
+    preorder(root);[cite: 2]
+    
+    printf("\nPostorder Traversal: ");[cite: 2]
+    postorder(root);[cite: 2]
+    printf("\n");
+
+    return 0;
+}
+
+
+
+
+//OUTPUT
+//Inorder Traversal: 40 20 50 10 60 30 70 
+Preorder Traversal: 10 20 40 50 30 60 70 
+Postorder Traversal: 40 50 20 60 70 30 10
